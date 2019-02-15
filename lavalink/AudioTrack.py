@@ -4,10 +4,10 @@ class InvalidTrack(Exception):
 
 
 class AudioTrack:
-    def build(self, track, requester):
+    def build(self, track, id, requester):
         """ Returns an optional AudioTrack. """
         try:
-            self.track = track
+            self.track = tid
             self.identifier = track['info']['identifier']
             self.can_seek = track['info']['isSeekable']
             self.author = track['info']['author']

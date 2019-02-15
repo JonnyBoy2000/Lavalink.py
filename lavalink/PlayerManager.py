@@ -89,9 +89,9 @@ class DefaultPlayer(BasePlayer):
         except KeyError:
             pass
 
-    def add(self, requester: int, track: str):
+    def add(self, requester: int, tid: str, track: dict):
         """ Adds a track to the queue. """
-        self.queue.append(AudioTrack().build(track, requester))
+        self.queue.append(AudioTrack().build(track, tid, requester))
 
     def add_next(self, requester: int, track: dict):
         """ Adds a track to beginning of the queue """
