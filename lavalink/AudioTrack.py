@@ -7,7 +7,7 @@ class AudioTrack:
     def build(self, track, requester):
         """ Returns an optional AudioTrack. """
         try:
-            self.track = track['track']
+            self.track = track
             self.identifier = track['info']['identifier']
             self.can_seek = track['info']['isSeekable']
             self.author = track['info']['author']
