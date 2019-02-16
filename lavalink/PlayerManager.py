@@ -89,7 +89,7 @@ class DefaultPlayer(BasePlayer):
         except KeyError:
             pass
 
-    def add(self, requester: int, track):
+    async def add(self, requester: int, track):
         """ Adds a track to the queue. """
         if type(track) is str:
             tracks = await get_tracks(query=track)
