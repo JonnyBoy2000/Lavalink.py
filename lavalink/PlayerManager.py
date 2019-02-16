@@ -119,6 +119,7 @@ class DefaultPlayer(BasePlayer):
                 track = self.queue.pop(randrange(len(self.queue)))
             else:
                 track = self.queue.pop(min(track_index, len(self.queue) - 1))
+                print(track)
 
             self.current = track
             await self._lavalink.ws.send(op='play', guildId=self.guild_id, track=track.track)
