@@ -92,7 +92,7 @@ class DefaultPlayer(BasePlayer):
     def add(self, requester: int, track):
         """ Adds a track to the queue. """
         if type(track) is str:
-            track = await get_tracks(query=track)
+            tracks = await get_tracks(query=track)
             track = tracks['tracks'][0]
         self.queue.append(AudioTrack().build(track, requester))
 
