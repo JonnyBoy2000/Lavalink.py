@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from random import randrange
-import .Client
+from .Client import get_tracks
 from .AudioTrack import AudioTrack
 from .Events import QueueEndEvent, TrackExceptionEvent, TrackEndEvent, TrackStartEvent, TrackStuckEvent
 
@@ -92,7 +92,7 @@ class DefaultPlayer(BasePlayer):
     def add(self, requester: int, track):
         """ Adds a track to the queue. """
         if type(track) is str:
-            track = await Client.get_tracks(query=track)
+            track = await get_tracks(query=track)
             track = tracks['tracks'][0]
         self.queue.append(AudioTrack().build(track, requester))
 
