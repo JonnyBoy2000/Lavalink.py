@@ -93,13 +93,13 @@ class DefaultPlayer(BasePlayer):
         """ Adds a track to the queue. """
         self.queue.append(AudioTrack().build(track, tid, requester))
 
-    def add_next(self, requester: int, track: dict):
+    def add_next(self, requester: int, tid: str, track: dict):
         """ Adds a track to beginning of the queue """
-        self.queue.insert(0, AudioTrack().build(track, requester))
+        self.queue.insert(0, AudioTrack().build(track, tid, requester))
 
-    def add_at(self, index: int, requester: int, track: dict):
+    def add_at(self, index: int, requester: int, tid: str, track: dict):
         """ Adds a track at a specific index in the queue. """
-        self.queue.insert(min(index, len(self.queue) - 1), AudioTrack().build(track, requester))
+        self.queue.insert(min(index, len(self.queue) - 1), AudioTrack().build(track, tid, requester))
 
     async def play(self, track_index: int = 0, ignore_shuffle: bool = False):
         """ Plays the first track in the queue, if any or plays a track from the specified index in the queue. """
@@ -121,12 +121,12 @@ class DefaultPlayer(BasePlayer):
                 track = self.queue.pop(min(track_index, len(self.queue) - 1))
 
             self.current = track
-            await self._lavalink.ws.send(op='play', guildId=self.guild_id, track=track.track)
+            await self._lavalink.ws.send(op='play', guildId=self.guild_id, track=track)
             await self._lavalink.dispatch_event(TrackStartEvent(self, track))
 
-    async def play_now(self, requester: int, track: dict):
+    async def play_now(self, requester: int, tid: str, track: dict):
         """ Add track and play it. """
-        self.add_next(requester, track)
+        self.add_next(requester, tid, track)
         await self.play(ignore_shuffle=True)
 
     async def play_at(self, index: int):
