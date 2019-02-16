@@ -126,10 +126,14 @@ class DefaultPlayer(BasePlayer):
                 track = track.replace('spotify', 'ytsearch')
                 track = await self._lavalink.get_tracks(track)
                 track = track['tracks'][0]
+
+                self.current = track
+                await self._lavalink.ws.send(op='play', guildId=self.guild_id, track=track['track'])
+                await self._lavalink.dispatch_event(TrackStartEvent(self, track))
             else:
                 self.current = track
-            await self._lavalink.ws.send(op='play', guildId=self.guild_id, track=track.track)
-            await self._lavalink.dispatch_event(TrackStartEvent(self, track))
+                await self._lavalink.ws.send(op='play', guildId=self.guild_id, track=track.track)
+                await self._lavalink.dispatch_event(TrackStartEvent(self, track))
 
     async def play_now(self, requester: int, track: dict):
         """ Add track and play it. """
