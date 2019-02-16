@@ -124,7 +124,8 @@ class DefaultPlayer(BasePlayer):
                 track = self.queue.pop(min(track_index, len(self.queue) - 1))
             if isinstance(track, str):
                 track = track.replace('spotify', 'ytsearch')
-                track = self._lavalink.get_tracks(track)[0]
+                track = self._lavalink.get_tracks(track)
+                track = track['tracks'][0]
             self.current = track
             await self._lavalink.ws.send(op='play', guildId=self.guild_id, track=track.track)
             await self._lavalink.dispatch_event(TrackStartEvent(self, track))
