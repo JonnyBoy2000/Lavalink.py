@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from random import randrange
-import Client
+import typing
 from .AudioTrack import AudioTrack
 from .Events import QueueEndEvent, TrackExceptionEvent, TrackEndEvent, TrackStartEvent, TrackStuckEvent
 
@@ -89,12 +89,12 @@ class DefaultPlayer(BasePlayer):
         except KeyError:
             pass
 
-    async def add(self, requester: int, track):
+    def add(self, requester: int, track: typing.Union[dict, str]):
         """ Adds a track to the queue. """
-        if type(track) is str:
-            tracks = await Client.get_tracks(query=track)
-            track = tracks['tracks'][0]
-        self.queue.append(AudioTrack().build(track, requester))
+        if isinstance(track, dict):
+          self.queue.append(AudioTrack().build(track, requester))
+        else:
+          self.queue.append(track)
 
     def add_next(self, requester: int, track: dict):
         """ Adds a track to beginning of the queue """
@@ -122,7 +122,9 @@ class DefaultPlayer(BasePlayer):
                 track = self.queue.pop(randrange(len(self.queue)))
             else:
                 track = self.queue.pop(min(track_index, len(self.queue) - 1))
-
+            if isinstance(track, str):
+                track = track.replace('spotify', 'ytsearch')
+                track = self._lavalink.get_tracks(track)[0]
             self.current = track
             await self._lavalink.ws.send(op='play', guildId=self.guild_id, track=track.track)
             await self._lavalink.dispatch_event(TrackStartEvent(self, track))
