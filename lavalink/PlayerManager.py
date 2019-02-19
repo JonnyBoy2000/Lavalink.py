@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from random import randrange
 import typing
+import random
 from .AudioTrack import AudioTrack
 from .Events import QueueEndEvent, TrackExceptionEvent, TrackEndEvent, TrackStartEvent, TrackStuckEvent
 
