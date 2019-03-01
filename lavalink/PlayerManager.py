@@ -100,13 +100,19 @@ class DefaultPlayer(BasePlayer):
         else:
           self.queue.append(track)
 
-    def add_next(self, requester: int, track: dict):
+    def add_next(self, requester: int, track: typing.Union[dict, str]):
         """ Adds a track to beginning of the queue """
-        self.queue.insert(0, AudioTrack().build(track, requester))
+        if isinstance(track, dict):
+            self.queue.insert(0, AudioTrack().build(track, requester))
+        else:
+            self.queue.insert(0, track)
 
-    def add_at(self, index: int, requester: int, track: dict):
+    def add_at(self, index: int, requester: int, track: typing.Union[dict, str]):
         """ Adds a track at a specific index in the queue. """
-        self.queue.insert(min(index, len(self.queue) - 1), AudioTrack().build(track, requester))
+        if isinstance(track, dict):
+            self.queue.insert(min(index, len(self.queue) - 1), AudioTrack().build(track, requester))
+        else:
+            self.queue.insert(min(index, len(self.queue) - 1), track)
 
     async def play(self, track_index: int = 0):
         """ Plays the first track in the queue, if any or plays a track from the specified index in the queue. """
