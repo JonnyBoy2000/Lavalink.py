@@ -143,7 +143,6 @@ class DefaultPlayer(BasePlayer):
                     await self._lavalink.dispatch_event(TrackStartEvent(self, track))
                 except:
                     await self._lavalink.ws.send(op='play', guildId=self.guild_id, track=track['track'])
-                    await self._lavalink.dispatch_event(TrackStartEvent(self, track))
 
     async def play_now(self, requester: int, track: dict):
         """ Add track and play it. """
